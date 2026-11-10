@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MoonHongRUNE</title>
+<meta name="description" content="붉은 달 아래에서 뽑는 룬 오라클 카드. 원카드, 쓰리카드, 룬 십자가 배열법.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0d17'/%3E%3Cpath d='M38 10a22 22 0 1 0 14 34a18 18 0 1 1-14-34z' fill='%23d6404f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="#draw" aria-label="MoonHongRUNE 처음으로">Moon<b>Hong</b>RUNE</a>
+  <nav aria-label="주요 메뉴">
+    <a href="#draw">룬 뽑기</a>
+    <a href="#library">룬 도감</a>
+  </nav>
+</header>
+
+<main>
+  <section class="intro" id="draw">
+    <p class="eyebrow">Rune Oracle · 스물다섯 개의 룬</p>
+    <h1>붉은 달 아래,<br>룬에게 말을 겁니다</h1>
+    <p class="lead">룬은 방향과 함께 지금의 상황, 질문하는 사람의 흐름을 고려해 읽을 때 가장 정교한 메시지를 줍니다. 역방향이 꼭 나쁜 의미인 것은 아닙니다. 성장의 기회이거나, 멈추고 다시 생각하라는 신호일 수 있어요.</p>
+
+    <form class="setup" id="setup">
+      <fieldset class="spreads">
+        <legend>배열법을 고르세요</legend>
+        <div class="spread-options" id="spreadOptions"></div>
+      </fieldset>
+
+      <div class="question">
+        <label for="question">마음속 질문 <span>(선택)</span></label>
+        <input id="question" name="question" type="text" maxlength="80" autocomplete="off" placeholder="예) 지금 준비하는 일을 계속 밀고 가도 될까요?">
+      </div>
+
+      <button class="primary" type="submit" id="startBtn">룬 섞기</button>
+    </form>
+  </section>
+
+  <section class="table" id="table" hidden>
+    <div class="table-head">
+      <h2 id="spreadTitle"></h2>
+      <p class="asked" id="asked" hidden></p>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="deck" id="deck" aria-label="뒤집어 놓은 룬 카드 25장"></div>
+
+    <div class="layout" id="layout"></div>
+
+    <div class="table-actions" id="tableActions" hidden>
+      <button type="button" class="ghost" id="flipAll">모두 뒤집기</button>
+      <button type="button" class="ghost" id="redraw">다시 뽑기</button>
+      <a class="ghost" href="#draw">배열법 바꾸기</a>
+    </div>
+
+    <div class="readings" id="readings"></div>
+  </section>
+
+  <section class="library" id="library">
+    <h2>룬 도감</h2>
+    <p class="section-lead">스물네 개의 엘더 푸타르크 룬과 공백 룬. 눌러서 해설을 펼쳐 보세요.</p>
+    <div class="rune-grid" id="runeGrid"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>룬 문양과 카드 그림은 이 사이트를 위해 새로 그렸습니다. 덱을 가진 사람의 개인 리딩용입니다.</p>
+</footer>
+
+<dialog class="rune-dialog" id="runeDialog" aria-labelledby="dialogTitle">
+  <button type="button" class="dialog-close" id="dialogClose" aria-label="닫기">×</button>
+  <div id="dialogBody"></div>
+</dialog>
+
+<script src="runes.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

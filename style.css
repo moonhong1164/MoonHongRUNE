@@ -343,6 +343,8 @@ h2 {
 .foot { border-top: 1px solid var(--line); padding: 28px 20px 48px; text-align: center; color: var(--mist); font-size: .85rem; }
 .foot p { margin: 0 0 4px; }
 .foot cite { font-style: normal; color: var(--moon); }
+.foot .copyright { margin: 14px 0 0; font-family: var(--display); letter-spacing: .08em; }
+.foot .copyright b { font-family: var(--body); color: var(--hong); letter-spacing: 0; }
 
 /* ── 좁은 화면 ────────────────────── */
 @media (max-width: 760px) {

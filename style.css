@@ -38,7 +38,7 @@ body {
 
 /* 밤하늘: 오른쪽 위에 걸린 붉은 달과 별 */
 .sky {
-  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  position: absolute; top: 0; left: 0; right: 0; height: 900px; z-index: -1; pointer-events: none;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M62 8A44 44 0 1 0 92 70A36 36 0 1 1 62 8Z' fill='%23d6404f'/%3E%3C/svg%3E") right 9% top 76px / 170px 170px no-repeat,
     radial-gradient(circle at 86% 160px, rgba(214, 64, 79, .26) 0, transparent 360px),
@@ -260,6 +260,8 @@ h2 {
 .tag.is-rev { border-color: var(--hong); color: var(--hong); }
 .tag.yn { font-family: var(--display); letter-spacing: .08em; color: var(--moon); border-color: var(--moon); }
 .desc { margin: 0; max-width: 40em; }
+.lore { color: var(--mist); }
+.alt { margin: 8px 0 0; font-size: .85rem; color: var(--mist); opacity: .8; }
 .sub { margin: 0 0 8px; font-size: .88rem; color: var(--mist); letter-spacing: .08em; }
 .kw { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0; padding: 0; list-style: none; }
 .kw li { font-size: .9rem; padding: 1px 10px; background: var(--stone); border-radius: 4px; }
@@ -297,6 +299,46 @@ h2 {
 .orient-block { display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 1px solid var(--line); }
 .orient-block h4 { margin: 0; font-size: 1.1rem; display: flex; gap: 10px; align-items: center; }
 
+/* ── 기원 ─────────────────────────── */
+.origin { display: flex; flex-direction: column; gap: 48px; }
+.origin > h2, .origin > .section-lead { margin-bottom: 0; }
+.origin > .section-lead { margin-top: -36px; max-width: 38em; }
+.origin h3 { margin: 0 0 12px; font-size: 1.2rem; line-height: 1.35; color: var(--moon); }
+.origin p { margin: 0 0 12px; color: var(--mist); max-width: 36em; }
+.origin p:last-child { margin-bottom: 0; }
+.origin strong { color: var(--moon); }
+.origin-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.origin-grid article { padding-top: 20px; border-top: 1px solid var(--line); }
+
+.guide-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.guide-steps li { counter-increment: step; padding-top: 20px; border-top: 1px solid var(--line); }
+.guide-steps li::before { content: counter(step); display: block; font-family: var(--display); font-size: 1.5rem; line-height: 1; color: var(--hong); margin-bottom: 10px; }
+.cautions { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; max-width: 40em; }
+.cautions li { padding-left: 18px; border-left: 2px solid var(--hong); color: var(--mist); }
+.cautions strong { display: block; }
+
+.aettir { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.aett { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 16px; align-items: center; }
+.aett-name { font-size: .92rem; line-height: 1.4; color: var(--mist); }
+.aett-name b { display: block; color: var(--hong); font-size: 1rem; }
+.aett-runes { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; max-width: 560px; }
+.aett-rune {
+  appearance: none; cursor: pointer; padding: 8px 4px 6px; color: var(--mist); font: inherit; font-size: .72rem; line-height: 1.2;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--stone); border: 1px solid var(--stone-hi); border-radius: 6px;
+  transition: border-color .2s, transform .2s;
+}
+.aett-rune:hover { border-color: var(--hong); transform: translateY(-3px); }
+.aett-rune .glyph { flex: none; width: 100%; max-width: 34px; height: auto; }
+.aett-rune .glyph path { stroke-width: 9; }
+
+.timeline { margin: 20px 0 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 24px; }
+.timeline dt {
+  padding: 12px 0; border-top: 1px solid var(--line); white-space: nowrap;
+  font-family: var(--display); color: var(--hong); font-variant-numeric: tabular-nums;
+}
+.timeline dd { margin: 0; padding: 12px 0; border-top: 1px solid var(--line); color: var(--mist); max-width: 38em; }
+
 /* ── 꼬리 ─────────────────────────── */
 .foot { border-top: 1px solid var(--line); padding: 28px 20px 48px; text-align: center; color: var(--mist); font-size: .85rem; }
 .foot p { margin: 0 0 4px; }
@@ -307,7 +349,6 @@ h2 {
   body { font-size: 16px; }
   main { gap: 64px; }
   .intro { padding-top: 48px; }
-  .sky { background-position: 0 0; }
   .spread-options { grid-template-columns: 1fr; }
   .reading { grid-template-columns: 1fr; gap: 20px; }
   .reading-card { position: static; width: 120px; }
@@ -315,6 +356,13 @@ h2 {
   .dialog-head { grid-template-columns: 84px minmax(0, 1fr); gap: 16px; }
   .rune-dialog { padding: 28px 20px; }
   .rune-grid { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 10px; }
+  .origin-grid, .guide-steps { grid-template-columns: 1fr; gap: 28px; }
+  .top nav { gap: 14px; }
+  .top nav a { font-size: .88rem; }
+  .aett { grid-template-columns: 1fr; gap: 8px; }
+  .aett-runes { gap: 5px; }
+  .aett-rune { font-size: .62rem; padding: 6px 2px 5px; }
+  .timeline { gap: 0 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

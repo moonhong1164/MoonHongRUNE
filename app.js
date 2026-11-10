@@ -101,6 +101,11 @@
   function adviceHTML(rune) {
     return `<div><p class="sub">조언</p><blockquote class="advice">${rune.advice.map((a) => `<p>${esc(a)}</p>`).join('')}</blockquote></div>`;
   }
+  function loreHTML(rune) {
+    if (!rune.lore) return '';
+    return `<div><p class="sub">신화와 상징</p><p class="desc lore">${esc(rune.lore)}</p>` +
+      (rune.alt ? `<p class="alt">다른 표기 · ${esc(rune.alt)}</p>` : '') + '</div>';
+  }
   function extrasHTML(rune) {
     let h = '';
     if (rune.shadow) h += `<div><p class="sub">흐름이 막힐 때 함께 살필 점</p>${fortuneHTML(rune.shadow)}</div>`;
@@ -124,7 +129,7 @@
       `<p class="desc">${esc(rune.desc)}</p>` +
       kwHTML(data) +
       `<div><p class="sub">${rune.reversible ? (reversed ? '역방향 해석' : '정방향 해석') : '해석'}</p>${fortuneHTML(data)}</div>` +
-      extrasHTML(rune) + adviceHTML(rune) +
+      extrasHTML(rune) + adviceHTML(rune) + loreHTML(rune) +
       '</div>';
   }
 
@@ -137,7 +142,7 @@
       `<div><h3 id="dialogTitle">${esc(rune.ko)} <span>${esc(rune.en)}</span></h3>` +
       `<div class="tags"><span class="tag">${rune.reversible ? '정방향 · 역방향' : '방향 없음'}</span></div></div></div>` +
       '<div class="dialog-sections">' +
-      `<p class="desc">${esc(rune.desc)}</p>` +
+      `<p class="desc">${esc(rune.desc)}</p>` + loreHTML(rune) +
       block(rune.reversible ? '정방향' : '해석', rune.up) +
       (rune.rev ? block('역방향', rune.rev) : '') +
       extrasHTML(rune) + adviceHTML(rune) + '</div>';
@@ -259,6 +264,20 @@
       `<button type="button" class="rune-tile" data-i="${i}" aria-label="${esc(r.ko)} ${esc(r.en)} 해설 보기">${faceHTML(r, false)}</button>`).join('');
   }
 
+  /* ── 기원: 세 개의 아이트 (엘더 푸타르크 순서대로 여덟 개씩) ── */
+  const AETTIR = [
+    ['첫째 아이트', '프레이의 가문'],
+    ['둘째 아이트', '하갈의 가문'],
+    ['셋째 아이트', '티르의 가문']
+  ];
+  function renderAettir() {
+    $('aettir').innerHTML = AETTIR.map(([name, family], a) => {
+      const runes = RUNES.slice(a * 8, a * 8 + 8).map((r, k) =>
+        `<button type="button" class="aett-rune" data-i="${a * 8 + k}" aria-label="${esc(r.ko)} ${esc(r.en)} 해설 보기">${glyphSVG(r, false)}<span>${esc(r.ko)}</span></button>`).join('');
+      return `<div class="aett"><div class="aett-name"><b>${name}</b>${family}</div><div class="aett-runes">${runes}</div></div>`;
+    }).join('');
+  }
+
   /* ── 이벤트 ───────────────────────── */
   $('setup').addEventListener('submit', (e) => {
     e.preventDefault();
@@ -293,16 +312,19 @@
   });
 
   const dialog = $('runeDialog');
-  $('runeGrid').addEventListener('click', (e) => {
-    const tile = e.target.closest('.rune-tile');
+  function openRune(e) {
+    const tile = e.target.closest('.rune-tile, .aett-rune');
     if (!tile) return;
     $('dialogBody').innerHTML = dialogHTML(RUNES[Number(tile.dataset.i)]);
     dialog.showModal();
     dialog.scrollTop = 0;
-  });
+  }
+  $('runeGrid').addEventListener('click', openRune);
+  $('aettir').addEventListener('click', openRune);
   $('dialogClose').addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
   renderSpreadOptions();
   renderLibrary();
+  renderAettir();
 })();

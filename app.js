@@ -193,6 +193,7 @@
     $('readings').innerHTML = Object.keys(s.positions).map((p) =>
       `<article class="reading" data-pos="${p}" hidden></article>`).join('');
 
+    if (journal) journal.hide();
     updateStatus();
   }
 
@@ -251,6 +252,7 @@
     article.innerHTML = readingHTML(pos, spread().positions[pos][1], picked.entry);
     article.hidden = false;
 
+    if (journal && state.flipped.size === spread().count) journal.show();
     updateStatus();
     if (!quiet && state.flipped.size === spread().count) {
       const target = spread().count === 1 ? article : $('readings');
@@ -323,6 +325,20 @@
   $('aettir').addEventListener('click', openRune);
   $('dialogClose').addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+
+  /* ── 리딩 일지에 저장 (허브의 journal-box.js를 못 불러오면 아무것도 하지 않는다) ── */
+  /* 방향이 있는 룬은 정·역방향을, 방향이 없는 룬은 null 을 남긴다 */
+  var journal = window.MoonHongJournal && window.MoonHongJournal.box ? window.MoonHongJournal.box({
+    deck: '룬', deckId: 'rune', after: $('readings'),
+    read: () => {
+      const s = spread();
+      if (!state.picks.length || state.flipped.size < s.count) return null;
+      return { spread: s.name, question: state.question,
+        cards: state.picks.slice().sort((a, b) => a.pos - b.pos).map((p) => ({
+          name: p.entry.rune.ko, position: s.positions[p.pos][0],
+          orientation: p.entry.rune.reversible ? (p.entry.reversed ? 'reversed' : 'upright') : null })) };
+    }
+  }) : null;
 
   renderSpreadOptions();
   renderLibrary();
